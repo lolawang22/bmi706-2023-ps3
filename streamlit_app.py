@@ -89,7 +89,7 @@ ages = [
     "Age >64",
 ]
 
-chart = alt.Chart(subset).mark_bar().encode(
+chart = alt.Chart(subset).mark_rect().encode(
     x=alt.X('Age:O', sort=ages), 
     y=alt.Y('Country:N'), 
     color=alt.Color('Rate:Q',
@@ -101,7 +101,20 @@ chart = alt.Chart(subset).mark_bar().encode(
 )
 ### P2.5 ###
 
-st.altair_chart(chart, use_container_width=True)
+brush = alt.selection_interval(encodings=['x'])
+
+bar_chart = alt.Chart(subset).mark_bar().encode(
+    x=alt.X('sum(Population):Q', title='Sum of population size'),
+    y=alt.Y('Country:N', sort='-x'),
+    tooltip=['Country:N', 'sum(Population):Q']
+).transform_filter(
+    brush
+).properties(
+    height=300,
+    width=700
+)
+
+st.altair_chart(chart & bar_chart, use_container_width=True)
 
 countries_in_subset = subset["Country"].unique()
 if len(countries_in_subset) != len(countries):
