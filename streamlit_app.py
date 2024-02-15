@@ -29,6 +29,7 @@ def load_data():
 
 # Uncomment the next line when finished
 df = load_data()
+print(df)
 
 ### P1.2 ###
 
@@ -110,9 +111,6 @@ bar_chart = alt.Chart(subset).mark_bar().encode(
     tooltip=['Country:N', 'sum(Pop):Q']
 ).transform_filter(
     brush
-).properties(
-    height=300,
-    width='container'
 )
 
 st.altair_chart(chart & bar_chart, use_container_width=True)
