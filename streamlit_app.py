@@ -76,6 +76,7 @@ cancer = st.selectbox('Cancer',types, index=0)
 subset = subset[subset["Cancer"] == cancer]
 ### P2.4 ###
 
+brush = alt.selection_interval(encodings=['x'])
 
 ### P2.5 ###
 ages = [
@@ -96,12 +97,12 @@ chart = alt.Chart(subset).mark_rect().encode(
                     scale=alt.Scale(type='log', domain=[0.01, 100], clamp=True),
                     legend=alt.Legend(title="Mortality rate per 100k")),
     tooltip=['Rate:Q'] 
+).add_selection(
+    brush
 ).properties(
     title=f"{cancer} mortality rates for {'males' if sex == 'M' else 'females'} in {year}",
 )
 ### P2.5 ###
-
-brush = alt.selection_interval(encodings=['x'])
 
 bar_chart = alt.Chart(subset).mark_bar().encode(
     x=alt.X('sum(Population):Q', title='Sum of population size'),
