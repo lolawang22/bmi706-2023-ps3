@@ -101,7 +101,7 @@ chart = alt.Chart(subset).mark_rect().encode(
     brush
 ).properties(
     title=f"{cancer} mortality rates for {'males' if sex == 'M' else 'females'} in {year}",
-    width='container'
+    width=700
 )
 ### P2.5 ###
 
