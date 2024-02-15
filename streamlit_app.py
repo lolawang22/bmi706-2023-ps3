@@ -101,6 +101,7 @@ chart = alt.Chart(subset).mark_rect().encode(
     brush
 ).properties(
     title=f"{cancer} mortality rates for {'males' if sex == 'M' else 'females'} in {year}",
+    width='container'
 )
 ### P2.5 ###
 
@@ -111,7 +112,8 @@ bar_chart = alt.Chart(subset).mark_bar().encode(
 ).transform_filter(
     brush
 ).properties(
-    width='container' 
+    height=300,
+    width='container'
 )
 
 st.altair_chart(chart & bar_chart, use_container_width=True)
