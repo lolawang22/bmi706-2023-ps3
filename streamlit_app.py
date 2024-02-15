@@ -112,7 +112,7 @@ bar_chart = alt.Chart(subset).mark_bar().encode(
 ).transform_filter(
     brush
 ).properties(
-    height=100,
+    height=150,
     width=500
 )
 
