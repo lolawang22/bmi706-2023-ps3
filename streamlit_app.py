@@ -3,7 +3,7 @@ import pandas as pd
 import streamlit as st
 
 ### P1.2 ###
-
+'''
 # Move this code into `load_data` function {{
 cancer_df = pd.read_csv("https://raw.githubusercontent.com/hms-dbmi/bmi706-2022/main/cancer_data/cancer_ICD10.csv").melt(  # type: ignore
     id_vars=["Country", "Year", "Cancer", "Sex"],
@@ -23,7 +23,7 @@ df.dropna(inplace=True)
 
 df = df.groupby(["Country", "Year", "Cancer", "Age", "Sex"]).sum().reset_index()
 df["Rate"] = df["Deaths"] / df["Pop"] * 100_000
-
+'''
 # }}
 
 
@@ -60,14 +60,15 @@ st.write("## Age-specific cancer mortality rates")
 
 ### P2.1 ###
 # replace with st.slider
-year = 2012
+
+year = st.slider('Year', 1994, 2020, 2012)
 subset = df[df["Year"] == year]
 ### P2.1 ###
 
 
 ### P2.2 ###
 # replace with st.radio
-sex = "M"
+sex = st.radio("Sex",["M", "F"])
 subset = subset[subset["Sex"] == sex]
 ### P2.2 ###
 
@@ -75,22 +76,23 @@ subset = subset[subset["Sex"] == sex]
 ### P2.3 ###
 # replace with st.multiselect
 # (hint: can use current hard-coded values below as as `default` for selector)
-countries = [
-    "Austria",
+countries = st.multiselect('Countries',
+    ["Austria",
     "Germany",
     "Iceland",
     "Spain",
     "Sweden",
     "Thailand",
-    "Turkey",
-]
+    "Turkey"])
 subset = subset[subset["Country"].isin(countries)]
 ### P2.3 ###
 
 
 ### P2.4 ###
 # replace with st.selectbox
-cancer = "Malignant neoplasm of stomach"
+#cancer = "Malignant neoplasm of stomach"
+types = sorted(subset['Cancer'].unique())
+cancer = st.selectbox('Cancer',types)
 subset = subset[subset["Cancer"] == cancer]
 ### P2.4 ###
 
@@ -108,10 +110,12 @@ ages = [
 ]
 
 chart = alt.Chart(subset).mark_bar().encode(
-    x=alt.X("Age", sort=ages),
-    y=alt.Y("Rate", title="Mortality rate per 100k"),
-    color="Country",
-    tooltip=["Rate"],
+    x=alt.X('Age:O', sort=ages), 
+    y=alt.Y('Country:N'), 
+    color=alt.Color('Rate:Q',
+                    scale=alt.Scale(type='log', domain=[0.01, 100], clamp=True),
+                    legend=alt.Legend(title="Mortality rate per 100k")),
+    tooltip=['Rate:Q'] 
 ).properties(
     title=f"{cancer} mortality rates for {'males' if sex == 'M' else 'females'} in {year}",
 )
