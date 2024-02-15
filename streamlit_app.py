@@ -105,13 +105,14 @@ chart = alt.Chart(subset).mark_rect().encode(
 ### P2.5 ###
 
 bar_chart = alt.Chart(subset).mark_bar().encode(
-    x=alt.X('sum(Population):Q', title='Sum of population size'),
+    x=alt.X('sum(Pop):Q', title='Sum of population size'),
     y=alt.Y('Country:N', sort='-x'),
-    tooltip=['Country:N', 'sum(Population):Q']
+    tooltip=['Country:N', 'sum(Pop):Q']
 ).transform_filter(
     brush
 ).properties(
-    height=300
+    height=300,
+    width='container'
 )
 
 st.altair_chart(chart & bar_chart, use_container_width=True)
