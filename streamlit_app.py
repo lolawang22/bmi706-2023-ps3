@@ -111,8 +111,7 @@ bar_chart = alt.Chart(subset).mark_bar().encode(
 ).transform_filter(
     brush
 ).properties(
-    height=300,
-    width=700
+    height=300
 )
 
 st.altair_chart(chart & bar_chart, use_container_width=True)
